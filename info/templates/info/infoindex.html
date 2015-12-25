@@ -4,6 +4,8 @@
   <title>Parking Info</title>
  </head>
  <body>
-{{parkdata}}
+{% for time,id,data in datastruct%}
+<li>{{time}} : {{id}} -- {{data}}</li>
+{%endfor%}
  </body>
-</html>'
+</html>
