@@ -6,6 +6,7 @@ class ParkData(models.Model):
     nodeid = models.CharField(max_length=30,null=True,default='0')
     data = models.CharField(max_length=30,null=True,default='0')
     parkid = models.CharField(max_length=5,null=True,default='0')
+    command = models.CharField(max_length=5,null=True,default='0')
 
 class ParkDataHistory(models.Model):
     time = models.DateTimeField('date published')
