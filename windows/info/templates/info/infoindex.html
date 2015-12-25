@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <title>Parking Info</title>
+ </head>
+ <body>
+ <li>&nbsp 
+ Latest Update &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+ Node Number &nbsp&nbsp&nbsp 
+ Status &nbsp&nbsp&nbsp&nbsp
+
+ Command</li>
+{% for time,id,data,cmd in datastruct%}
+<li>{{time}} : {{id}} -- {{data}}&nbsp&nbsp&nbsp
+<a rel="Reset" href="http://127.0.0.1:8000/info/post?num={{id}}&cmd=1">Reset</a>&nbsp&nbsp&nbsp
+{{cmd}}
+</li>
+
+{%endfor%}
+ </body>
+</html>
