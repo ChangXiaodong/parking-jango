@@ -4,6 +4,7 @@ from info.models import ParkData, ParkDataHistory
 from django.utils import timezone
 import urllib
 import urllib2
+import json
 
 def index(req):
     # for i in range(1,51):
@@ -42,18 +43,19 @@ def index(req):
 
             if parkdata["data"] == '0' or parkdata["data"] == '1':
                 post_data += parkdata["node_id"] + "|" + parkdata["data"] + ","
-        return HttpResponse(cmdStack)
 
-        # if post_data:
-        #     parkdata["data"] = post_data[:-1]
-        # try:
-        #     response = urllib2.urlopen("http://123.57.37.66:8080/sensor/post/status", urllib.urlencode(parkdata), timeout=1)
-        #     return HttpResponse("Success")
-        # except urllib2.HTTPError,err:
-        #     return HttpResponse(err)
+
+        if post_data:
+            parkdata["data"] = post_data[:-1]
+        try:
+            #response = urllib2.urlopen("http://123.57.37.66:8080/sensor/post/status", urllib.urlencode(parkdata), timeout=1)
+            cmdStack["Status"] = "Success"
+            return HttpResponse(json.dumps(cmdStack), content_type="application/json")
+        except urllib2.HTTPError,err:
+            return HttpResponse(err)
     else:
         ParkData.objects .filter(nodeid=req.GET.get("num")).update(
-                    command="1"
+                    command=req.GET.get("cmd")
             )
         return HttpResponseRedirect('/info/show')
 

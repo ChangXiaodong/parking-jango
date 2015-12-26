@@ -12,7 +12,8 @@
  Command</li>
 {% for time,id,data,cmd in datastruct%}
 <li>{{time}} : {{id}} -- {{data}}&nbsp&nbsp&nbsp
-<a rel="Reset" href="http://127.0.0.1:8000/info/post?num={{id}}&cmd=1">Reset</a>&nbsp&nbsp&nbsp
+<a rel="Reset" href="/info/post?num={{id}}&cmd=1">DataTrans</a>&nbsp
+<a rel="Reset" href="/info/post?num={{id}}&cmd=2">Reset</a>&nbsp
 {{cmd}}
 </li>
 
