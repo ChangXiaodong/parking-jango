@@ -9,7 +9,8 @@ def index(req):
         item = ParkData.objects.get(nodeid="0086-110108-00022105-"+str(i).zfill(4))
         datastruct.append([(str(item.time.strftime('%Y-%m-%d %H:%M:%S'))),
                      "0086-110108-00022105-"+str(i).zfill(4),
-                     str(item.data)])
+                     str(item.data),
+                     str(item.command)])
     return render_to_response('info/infoindex.html',{'datastruct':datastruct})
 
 

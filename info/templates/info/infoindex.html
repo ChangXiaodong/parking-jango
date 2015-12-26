@@ -4,8 +4,19 @@
   <title>Parking Info</title>
  </head>
  <body>
-{% for time,id,data in datastruct%}
-<li>{{time}} : {{id}} -- {{data}}</li><a Reset href="www.xiaoxiami.space/info/cmd?num="{{id}}"&cmd=1"></a>
+ <li>&nbsp 
+ Latest Update &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+ Node Number &nbsp&nbsp&nbsp 
+ Status &nbsp&nbsp&nbsp&nbsp
+
+ Command</li>
+{% for time,id,data,cmd in datastruct%}
+<li>{{time}} : {{id}} -- {{data}}&nbsp&nbsp&nbsp
+<a rel="Reset" href="/info/post?num={{id}}&cmd=1">DataTrans</a>&nbsp
+<a rel="Reset" href="/info/post?num={{id}}&cmd=2">Reset</a>&nbsp
+{{cmd}}
+</li>
+
 {%endfor%}
  </body>
 </html>
