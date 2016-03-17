@@ -57,5 +57,5 @@ def index(req):
         ParkData.objects .filter(nodeid=req.GET.get("num")).update(
                     command=req.GET.get("cmd")
             )
-        return HttpResponseRedirect('/info/show')
+        return HttpResponseRedirect('/info/cmd')
 
