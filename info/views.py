@@ -5,12 +5,15 @@ from django.utils import timezone
 import urllib
 import urllib2
 import json
+import time
 
 def index(req):
     # for i in range(1,51):
     #     ParkData.objects .create(time=timezone.now(),relayid="0086-110108-00022105-01", data="0", parkid="22105", nodeid="0086-110108-00022105-" + str(i).zfill(4))
     # return HttpResponse("Init Database")
+
     if req.method == 'POST':
+        print 'views'
         parkdata = {}
         post_data = ""
         dataandid = str(req.POST.get("data")).split(",")
@@ -54,8 +57,12 @@ def index(req):
         except urllib2.HTTPError,err:
             return HttpResponse(err)
     else:
-        ParkData.objects .filter(nodeid=req.GET.get("num")).update(
-                    command=req.GET.get("cmd")
+        nodeid = req.GET.get("num")
+        cmd = req.GET.get("cmd")
+        with open("cmd_log.txt",'a+') as file:
+            file.write(time.strftime('%Y-%m-%d  %H:%M:%S', time.localtime(time.time()))+"  "+nodeid+"  "+cmd+"\n")
+        ParkData.objects .filter(nodeid=nodeid).update(
+                    command=cmd
             )
-        return HttpResponseRedirect('/info/cmd')
+        return HttpResponseRedirect('/info/cmd/')
 

@@ -6,11 +6,11 @@
  <body>
 {% for time,id,data,cmd in datastruct%}
 <li>{{time}} : {{id}} -- {{data}}&nbsp&nbsp&nbsp
-&nbsp <a rel="Reset" href="/info/post?num={{id}}&cmd=1">Data</a>&nbsp
-&nbsp <a rel="Reset" href="/info/post?num={{id}}&cmd=2">NoCar</a>&nbsp
-&nbsp <a rel="Reset" href="/info/post?num={{id}}&cmd=3">Car</a>&nbsp
-&nbsp <a rel="Reset" href="/info/post?num={{id}}&cmd=4">Reboot</a>&nbsp
-&nbsp <a rel="Reset" href="/info/post?num={{id}}&cmd=5">Once</a>&nbsp
+&nbsp <a rel="Reset" href="/info/post/?num={{id}}&cmd=1">Data</a>&nbsp
+&nbsp <a rel="Reset" href="/info/post/?num={{id}}&cmd=2">NoCar</a>&nbsp
+&nbsp <a rel="Reset" href="/info/post/?num={{id}}&cmd=3">Car</a>&nbsp
+&nbsp <a rel="Reset" href="/info/post/?num={{id}}&cmd=4">Reboot</a>&nbsp
+&nbsp <a rel="Reset" href="/info/post/?num={{id}}&cmd=5">Once</a>&nbsp
 {{cmd}}
 </li>
 
