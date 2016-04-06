@@ -48,7 +48,7 @@ def index(req):
         if post_data:
             parkdata["data"] = post_data[:-1]
         try:
-            #response = urllib2.urlopen("http://123.57.37.66:8080/sensor/post/status", urllib.urlencode(parkdata), timeout=1)
+            response = urllib2.urlopen("http://123.57.37.66:8080/sensor/post/status", urllib.urlencode(parkdata), timeout=1)
             cmdStack["Status"] = "Success"
             return HttpResponse(json.dumps(cmdStack), content_type="application/json")
         except urllib2.HTTPError,err:
@@ -57,5 +57,5 @@ def index(req):
         ParkData.objects .filter(nodeid=req.GET.get("num")).update(
                     command=req.GET.get("cmd")
             )
-        return HttpResponseRedirect('/info/show')
+        return HttpResponseRedirect('/info/cmd')
 
