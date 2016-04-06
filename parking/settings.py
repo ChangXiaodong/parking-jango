@@ -25,7 +25,9 @@ SECRET_KEY = '346+@e@0s@ilnl*hlfzakfo0+6(fqi4sv(s78l0nwq=ok=hy9u'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+  '*'
+]
 
 
 # Application definition
@@ -52,6 +54,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'parking.urls'
+
 
 TEMPLATES = [
     {
@@ -105,3 +108,8 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATICFILES_DIRS = (
+#    os.path.join(BASE_DIR, "site_static"),
+#)
+

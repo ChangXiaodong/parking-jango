@@ -17,6 +17,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from info import urls
 import info
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^$', info.index.index),

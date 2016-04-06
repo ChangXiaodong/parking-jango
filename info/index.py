@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from info.models import ParkData, ParkDataHistory
 
 def index(req):
-    return render_to_response('info/index.html')
+    return render_to_response('info/homepage/index.html')
 
 
 
