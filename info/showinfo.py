@@ -1,6 +1,7 @@
 from django.shortcuts import render, render_to_response, RequestContext
 from django.http import HttpResponse
 from info.models import ParkData, ParkDataHistory
+from info.models import ManholeData, ManholeDataHistory
 
 def info(req):
     datastruct = []
