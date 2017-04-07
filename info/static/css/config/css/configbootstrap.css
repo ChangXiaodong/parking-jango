@@ -1,0 +1,7 @@
+.row{margin-right:-15px;margin-left:-15px}
+.row:after,.row:before{display:table;content:" "}
+.row:after{clear:both}
+.panel{font-family:黑体;margin-bottom:20px;background-color:#fff;border:1px solid transparent;border-radius:4px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);box-shadow:0 1px 1px rgba(0,0,0,.05)}
+.panel-body{padding:15px}
+.status{font-family:黑体;font-size:60px;text-align:center;}
+.statuscode{font-family:黑体;font-size:30px;text-align:center;}
