@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'parkinfo',
         'USER':'root',
-        'PASSWORD':'',
+        'PASSWORD’:’cxd’,
         'HOST':'127.0.0.1',
         'PORT':'',
     }
