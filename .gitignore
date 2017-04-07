@@ -3,6 +3,6 @@
 *.out
 /.idea
 *.txt
-*/static/*
-/static/*
-info/templates/*
+#*/static/*
+#/static/*
+#info/templates/*
