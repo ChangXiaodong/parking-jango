@@ -7,6 +7,7 @@ class Sensor(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
     sensorid = models.CharField(max_length=30, null=True, default='0')  # 传感器id
     update_time = models.DateTimeField('date published')
+    new = models.BooleanField(default=True)  # 是否是新节点
     # 启动控制
     open_time = models.DateTimeField('date published')  # 传感器开启时间
     close_time = models.DateTimeField('date published')  # 传感器关闭时间
@@ -59,11 +60,12 @@ class Data(models.Model):
     min_index = models.CharField(max_length=100, null=True, default='')  # 最小值对应的index
     acc_z_max = models.IntegerField(default=0)  # 加速度z轴波形最大值
     acc_z_min = models.IntegerField(default=0)  # 加速度z轴波形最小值
-    acc_x_var = models.CharField(max_length=10, default="0")  #加速度x轴方差，抖动情况
+    acc_x_var = models.CharField(max_length=10, default="0")  # 加速度x轴方差，抖动情况
     acc_y_var = models.CharField(max_length=10, default="0")  # 加速度y轴方差，抖动情况
     gyo_x_var = models.CharField(max_length=10, default="0")  # 陀螺仪x轴方差，抖动情况
     gyo_y_var = models.CharField(max_length=10, default="0")  # 陀螺仪y轴方差，抖动情况
     gyo_z_var = models.CharField(max_length=10, default="0")  # 陀螺仪z轴方差，抖动情况
+
 
 class Configure(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
@@ -77,3 +79,11 @@ class Configure(models.Model):
     gyo_scale = models.IntegerField(null=True, default=0)
     gyo_fchoice = models.IntegerField(null=True, default=0)
     gyo_dlpf = models.IntegerField(null=True, default=0)
+
+class Configure_Log(models.Model):
+    target_relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
+    target_sensorid = models.CharField(max_length=30, null=True, default='0')  # 传感器id
+    time = models.DateTimeField('date published')  # 数据更新时间
+    finish_time = models.DateTimeField('date published')
+    finished = models.BooleanField(default=False)
+
