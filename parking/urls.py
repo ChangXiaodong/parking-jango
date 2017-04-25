@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from info import urls
+from info import urls as info_urls
+from manhole_database import urls as database_urls
 import info
 urlpatterns = [
     url(r'^$', info.index.index),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^info/', include(urls)),
+    url(r'^info/', include(info_urls)),
+    url(r'^database/', include(database_urls)),
 ]

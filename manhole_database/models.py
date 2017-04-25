@@ -5,7 +5,7 @@ from django.db import models
 # Create your models here.
 class Sensor(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
-    sensorid = models.CharField(max_length=30, null=True, default='0')  # 传感器id
+    sensorid = models.CharField(max_length=30, default='0', primary_key=True)  # 传感器id
     update_time = models.DateTimeField('date published')
     new = models.BooleanField(default=True)  # 是否是新节点
     # 启动控制
@@ -50,7 +50,7 @@ class Sensor(models.Model):
 
 class Data(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
-    sensorid = models.CharField(max_length=30, null=True, default='0')  # 传感器id
+    sensorid = models.ForeignKey(Sensor, related_name='data_sensor_id', default="0")  # 传感器id
     update_time = models.DateTimeField('date published')  # 数据更新时间
     processed_status = models.IntegerField(default=0)  # 数据被处理的次数
 
@@ -69,7 +69,7 @@ class Data(models.Model):
 
 class Configure(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
-    sensorid = models.CharField(max_length=30, null=True, default='0')  # 传感器id
+    sensorid = models.ForeignKey(Sensor, related_name='configure_sensor_id', default="0")  # 传感器id
     update_time = models.DateTimeField('date published')  # 数据更新时间
 
     # 传感器参数配置
