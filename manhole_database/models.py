@@ -11,8 +11,7 @@ class Sensor(models.Model):
     # 启动控制
     open_time = models.DateTimeField('date published')  # 传感器开启时间
     close_time = models.DateTimeField('date published')  # 传感器关闭时间
-    period = models.CharField(max_length=30, null=True, default='0')  # 周期性开启的周期
-    manual = models.CharField(max_length=10, null=True, default='0')
+    period = models.CharField(max_length=10, null=True, default='0')  # 周期性开启的周期
     # 工作模式
     # 'period':周期工作模式，周期由period设定
     # 'bytime':按照开启和关闭时间
@@ -28,7 +27,7 @@ class Sensor(models.Model):
     heavy_vehicle_p = models.IntegerField(null=True, default=0)  # 载重车辆通过的概率
     light_vehicle_p = models.IntegerField(null=True, default=0)  # 自行车等车辆通过的概率
     manhole_material = models.CharField(max_length=10, null=True, default='unknown')  # 井盖材料
-    manhole_installed_time = models.IntegerField(null=True, default=0)  # 井盖已经实用的时间，以天为单位
+    manhole_used_time = models.IntegerField(null=True, default=0)  # 井盖已经实用的时间，以天为单位
     estimate_status = models.CharField(max_length=10, null=True, default='low')  # 井盖损坏程度预估，low，middle，high
 
     # 识别参数
@@ -80,10 +79,28 @@ class Configure(models.Model):
     gyo_fchoice = models.IntegerField(null=True, default=0)
     gyo_dlpf = models.IntegerField(null=True, default=0)
 
+    # 算法参数配置
+    split_data_VAR_LEN = models.IntegerField(null=True, default=0)
+    split_data_MEAN_WIDTH_1 = models.IntegerField(null=True, default=0)
+    split_data_MEAN_WIDTH_2 = models.IntegerField(null=True, default=0)
+    get_valid_data_WIDTH = models.IntegerField(null=True, default=0)
+    split_data_WIDTH = models.IntegerField(null=True, default=0)
+    update_middlevalue_cnt = models.IntegerField(null=True, default=0)
+    listened_data_STABLECNT = models.IntegerField(null=True, default=0)
+    listened_data_SLOP = models.IntegerField(null=True, default=0)
+    listened_data_COUNT = models.IntegerField(null=True, default=0)
+    open_angle_threshold = models.IntegerField(null=True, default=0)
+    open_angle_cnt = models.IntegerField(null=True, default=0)
+
 class Configure_Log(models.Model):
     target_relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
     target_sensorid = models.CharField(max_length=30, null=True, default='0')  # 传感器id
     time = models.DateTimeField('date published')  # 数据更新时间
     finish_time = models.DateTimeField('date published')
     finished = models.BooleanField(default=False)
+
+class IPTables(models.Model):
+    relayid = models.CharField(max_length=30, null=True, default='0')
+    sensorid = models.ForeignKey(Sensor, related_name='iptables_sensor_id', default="0")
+    net_address = models.CharField(max_length=6, null=True, default='0')
 
