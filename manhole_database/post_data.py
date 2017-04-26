@@ -21,11 +21,11 @@ def post_sensor_data(req):
 def get_iptables(req):
     if req.method == 'POST':
         relayid = req.POST.get("relayid")
+        res = {}
         try:
             quary = IPTables.objects.filter(relayid=relayid)
-            res = [{"len": str(len(quary))}]
             for q in quary:
-                res.append({"n_a": str(q.net_address), "s_i": q.sensorid.sensorid})
+                res[str(q.sensorid.sensorid)] = str(q.net_address)
         except:
             res = {"res": "empty"}
         res = json.dumps(res)
