@@ -1,34 +1,36 @@
 # coding=utf-8
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
 class Sensor(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
-    sensorid = models.CharField(max_length=30, default='0', primary_key=True)  # 传感器id
-    update_time = models.DateTimeField('date published')
-    new = models.BooleanField(default=True)  # 是否是新节点
+    sensorid = models.CharField(max_length=30, default='0')  # 传感器id
+    update_time = models.DateTimeField(default='2016-04-07 10:58:41')
+    new = models.BooleanField()  # 是否是新节点
     # 启动控制
-    open_time = models.DateTimeField('date published')  # 传感器开启时间
-    close_time = models.DateTimeField('date published')  # 传感器关闭时间
-    period = models.CharField(max_length=10, null=True, default='0')  # 周期性开启的周期
+    open_time = models.DateTimeField(default='2016-04-07 10:58:41')  # 传感器开启时间
+    close_time = models.DateTimeField(default='2016-04-07 10:58:41')  # 传感器关闭时间
+    status = models.CharField(max_length=10, default="closed")  # 当前开启状态
+    period = models.CharField(max_length=10, default='0')  # 周期性开启的周期
     # 工作模式
     # 'period':周期工作模式，周期由period设定
     # 'bytime':按照开启和关闭时间
     # 'manual':手动控制，由manual字段控制
-    working_mode = models.CharField(max_length=10, null=True, default='0')
+    working_mode = models.CharField(max_length=10, default='0')
     # 其他手动配置参数
     install_time = models.DateTimeField('date published')  # 传感器安装时间
 
     # 算法数据
     # 手动配置
 
-    max_speed = models.IntegerField(null=True, default=50)  # 交通正常时车辆平均车速
-    heavy_vehicle_p = models.IntegerField(null=True, default=0)  # 载重车辆通过的概率
-    light_vehicle_p = models.IntegerField(null=True, default=0)  # 自行车等车辆通过的概率
-    manhole_material = models.CharField(max_length=10, null=True, default='unknown')  # 井盖材料
-    manhole_used_time = models.IntegerField(null=True, default=0)  # 井盖已经实用的时间，以天为单位
-    estimate_status = models.CharField(max_length=10, null=True, default='low')  # 井盖损坏程度预估，low，middle，high
+    max_speed = models.IntegerField(default=50)  # 交通正常时车辆平均车速
+    heavy_vehicle_p = models.IntegerField(default=0)  # 载重车辆通过的概率
+    light_vehicle_p = models.IntegerField(default=0)  # 自行车等车辆通过的概率
+    manhole_material = models.CharField(max_length=10, default='unknown')  # 井盖材料
+    manhole_used_time = models.IntegerField(default=0)  # 井盖已经实用的时间，以天为单位
+    estimate_status = models.CharField(max_length=10, default='low')  # 井盖损坏程度预估，low，middle，high
 
     # 识别参数
     identified_status = models.FloatField(null=True, default=0.0)  # 测量出的损坏程度，百分比
@@ -48,27 +50,23 @@ class Sensor(models.Model):
 
 
 class Data(models.Model):
-    relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
-    sensorid = models.ForeignKey(Sensor, related_name='data_sensor_id', default="0")  # 传感器id
+    relayid = models.CharField(max_length=30, default='0')  # 中继id
+    sensorid = models.CharField(max_length=10, default="0")  # 传感器id
     update_time = models.DateTimeField('date published')  # 数据更新时间
     processed_status = models.IntegerField(default=0)  # 数据被处理的次数
 
     start_index = models.IntegerField(default=0)  # 波形起始位置
     end_index = models.IntegerField(default=0)  # 波形中止位置
-    max_index = models.CharField(max_length=100, null=True, default='')  # 最大值对应的index
-    min_index = models.CharField(max_length=100, null=True, default='')  # 最小值对应的index
-    acc_z_max = models.IntegerField(default=0)  # 加速度z轴波形最大值
-    acc_z_min = models.IntegerField(default=0)  # 加速度z轴波形最小值
-    acc_x_var = models.CharField(max_length=10, default="0")  # 加速度x轴方差，抖动情况
-    acc_y_var = models.CharField(max_length=10, default="0")  # 加速度y轴方差，抖动情况
-    gyo_x_var = models.CharField(max_length=10, default="0")  # 陀螺仪x轴方差，抖动情况
-    gyo_y_var = models.CharField(max_length=10, default="0")  # 陀螺仪y轴方差，抖动情况
-    gyo_z_var = models.CharField(max_length=10, default="0")  # 陀螺仪z轴方差，抖动情况
+    index_len = models.IntegerField(default=0)  # 车辆轮子个数
+    width = models.IntegerField(default=0)  # 车辆轴距
+    peakvalue = models.IntegerField(default=0)  # 加速度z轴波形最大最小差值
+    other_peak = models.IntegerField(default=0)  # 其他轴极值
+    other_var = models.IntegerField(default=0)  # 其他轴方差
 
 
 class Configure(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
-    sensorid = models.ForeignKey(Sensor, related_name='configure_sensor_id', default="0")  # 传感器id
+    sensorid = models.CharField(max_length=10, default="0")  # 传感器id
     update_time = models.DateTimeField('date published')  # 数据更新时间
 
     # 传感器参数配置
@@ -92,15 +90,17 @@ class Configure(models.Model):
     open_angle_threshold = models.IntegerField(null=True, default=0)
     open_angle_cnt = models.IntegerField(null=True, default=0)
 
+
 class Configure_Log(models.Model):
     target_relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
     target_sensorid = models.CharField(max_length=30, null=True, default='0')  # 传感器id
-    time = models.DateTimeField('date published')  # 数据更新时间
-    finish_time = models.DateTimeField('date published')
+    time = models.DateTimeField(timezone.now)  # 数据更新时间
+    finish_time = models.DateTimeField(default=timezone.now)
     finished = models.BooleanField(default=False)
+
 
 class IPTables(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')
-    sensorid = models.ForeignKey(Sensor, related_name='iptables_sensor_id', default="0")
+    sensorid = models.CharField(max_length=10, default="0")
     net_address = models.CharField(max_length=6, null=True, default='0')
-
+    channel = models.CharField(max_length=3, null=True, default='40')
