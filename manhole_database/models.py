@@ -40,7 +40,7 @@ class Sensor(models.Model):
     total_vehicle_cnt = models.BigIntegerField(null=True, default=0)  # 通过车辆总个数，除大中小外可能包含其他离散的车辆
     average_speed = models.IntegerField(null=True, default=50)  # 根据人工设定的速度，网上抓取的速度，算法识别的速度。综合判断得到的速度
 
-    battery = models.FloatField(null=True, default=0.0)  # 剩余电量
+    battery = models.CharField(null=True, max_length=10, default="0")  # 剩余电量
     open_status = models.CharField(max_length=10, null=True, default='0')  # 开启状态
     loss_status = models.CharField(max_length=10, null=True, default='0')  # 丢失状态
 
@@ -67,36 +67,55 @@ class Data(models.Model):
 class Configure(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
     sensorid = models.CharField(max_length=10, default="0")  # 传感器id
-    update_time = models.DateTimeField('date published')  # 数据更新时间
+    update_time = models.DateTimeField(default=timezone.now)  # 数据更新时间
 
     # 传感器参数配置
-    acc_scale = models.IntegerField(null=True, default=0)
-    acc_fchoice = models.IntegerField(null=True, default=0)
-    acc_dlpf = models.IntegerField(null=True, default=0)
-    gyo_scale = models.IntegerField(null=True, default=0)
-    gyo_fchoice = models.IntegerField(null=True, default=0)
-    gyo_dlpf = models.IntegerField(null=True, default=0)
+    acc_scale = models.IntegerField(default=0)
+    acc_fchoice = models.IntegerField(default=0)
+    acc_dlpf = models.IntegerField(default=5)
+    gyo_scale = models.IntegerField(default=2)
+    gyo_fchoice = models.IntegerField(default=1)
+    gyo_dlpf = models.IntegerField(default=6)
 
     # 算法参数配置
-    split_data_VAR_LEN = models.IntegerField(null=True, default=0)
-    split_data_MEAN_WIDTH_1 = models.IntegerField(null=True, default=0)
-    split_data_MEAN_WIDTH_2 = models.IntegerField(null=True, default=0)
-    get_valid_data_WIDTH = models.IntegerField(null=True, default=0)
-    split_data_WIDTH = models.IntegerField(null=True, default=0)
-    update_middlevalue_cnt = models.IntegerField(null=True, default=0)
-    listened_data_STABLECNT = models.IntegerField(null=True, default=0)
-    listened_data_SLOP = models.IntegerField(null=True, default=0)
-    listened_data_COUNT = models.IntegerField(null=True, default=0)
-    open_angle_threshold = models.IntegerField(null=True, default=0)
-    open_angle_cnt = models.IntegerField(null=True, default=0)
+    split_data_VAR_LEN = models.IntegerField(default=3)
+    split_data_MEAN_WIDTH_1 = models.IntegerField(default=20)
+    split_data_MEAN_WIDTH_2 = models.IntegerField(default=10)
+    get_valid_data_WIDTH = models.IntegerField(default=2)
+    split_data_WIDTH = models.IntegerField(default=20)
+    update_middlevalue_cnt = models.IntegerField(default=5000)
+    listened_data_STABLECNT = models.IntegerField(default=300)
+    listened_data_SLOP = models.IntegerField(default=400)
+    listened_data_COUNT = models.IntegerField(default=700)
+    open_angle_threshold = models.IntegerField(default=30)
+    open_angle_cnt = models.IntegerField(default=500)
 
 
-class Configure_Log(models.Model):
-    target_relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
-    target_sensorid = models.CharField(max_length=30, null=True, default='0')  # 传感器id
-    time = models.DateTimeField(timezone.now)  # 数据更新时间
-    finish_time = models.DateTimeField(default=timezone.now)
-    finished = models.BooleanField(default=False)
+class PreConfigure(models.Model):
+    relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
+    sensorid = models.CharField(max_length=10, default="0")  # 传感器id
+    update_time = models.DateTimeField(default=timezone.now)  # 数据更新时间
+
+    # 传感器参数配置
+    acc_scale = models.IntegerField(default=0)
+    acc_fchoice = models.IntegerField(default=0)
+    acc_dlpf = models.IntegerField(default=5)
+    gyo_scale = models.IntegerField(default=2)
+    gyo_fchoice = models.IntegerField(default=1)
+    gyo_dlpf = models.IntegerField(default=6)
+
+    # 算法参数配置
+    split_data_VAR_LEN = models.IntegerField(default=3)
+    split_data_MEAN_WIDTH_1 = models.IntegerField(default=20)
+    split_data_MEAN_WIDTH_2 = models.IntegerField(default=10)
+    get_valid_data_WIDTH = models.IntegerField(default=2)
+    split_data_WIDTH = models.IntegerField(default=20)
+    update_middlevalue_cnt = models.IntegerField(default=5000)
+    listened_data_STABLECNT = models.IntegerField(default=300)
+    listened_data_SLOP = models.IntegerField(default=400)
+    listened_data_COUNT = models.IntegerField(default=700)
+    open_angle_threshold = models.IntegerField(default=30)
+    open_angle_cnt = models.IntegerField(default=500)
 
 
 class IPTables(models.Model):
@@ -104,3 +123,9 @@ class IPTables(models.Model):
     sensorid = models.CharField(max_length=10, default="0")
     net_address = models.CharField(max_length=6, null=True, default='0')
     channel = models.CharField(max_length=3, null=True, default='40')
+
+class RelayConfig(models.Model):
+    relayid = models.CharField(max_length=30, null=True, default='0')
+    start_time = models.DateTimeField(default='2016-04-07 10:58:41')
+    local_port = models.CharField(max_length=10, default="0")
+    remote_port = models.CharField(max_length=10, default="0")
