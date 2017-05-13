@@ -1,0 +1,29 @@
+:#!/bin/bash
+ 
+### BEGIN INIT INFO
+# Provides: xiaoxiami
+# Required-Start: $remote_fs
+# Required-Stop: $remote_fs
+# Default-Start: 2 3 4 5
+# Default-Stop:  0 1 6
+# Short-Description: monitor start up
+# Description: This service is used to start up
+### END INIT INFO
+ 
+case "$1" in
+    start)
+        echo "Starting Monitor"
+        python /home/pi/manhole/ssh_test.py
+        ;;
+    stop)
+        echo "Stopping Monitor"
+        #killall start_up.py
+        kill $(ps aux | grep -m 1 'python /home/pi/manhole/start_up.py' | awk '{ print $2 }')
+		kill $(ps aux | grep -m 1 'python /home/pi/manhole/monitor.py' | awk '{ print $2 }')
+        ;;
+    *)
+        echo "Usage: service ledblink start|stop"
+        exit 1
+        ;;
+esac
+exit 0
