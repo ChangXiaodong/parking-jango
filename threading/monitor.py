@@ -8,20 +8,29 @@ import json
 import os
 import datetime
 
+if "Linux" in platform.system():
+    import RPi.GPIO as GPIO
 
 class Monitor(object):
     def __init__(self, relay_id):
         if "Linux" in platform.system():
             self.url = "http://121.42.213.241"
+            self.log_path = "/home/pi/manhole/log/{}.txt".format(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+            self.config_dir = "/home/pi/manhole/configure/"
+            self.log_path_dir = "/home/pi/manhole/log/"
+
         else:
             self.url = "http://127.0.0.1:8000"
+            self.log_path = "./log/log.txt"
+            self.config_dir = "./configure"
+            self.log_path_dir = "./log"
+
         self.url = "http://121.42.213.241"
         self.relay_id = relay_id
-        if not os.path.exists("./configure"):
-            os.mkdir("./configure")
-        self.log_path = "./log/log.txt"
-        if not os.path.exists("./log"):
-            os.mkdir("./log")
+        if not os.path.exists(self.config_dir):
+            os.mkdir(self.config_dir)
+        if not os.path.exists(self.log_path_dir):
+            os.mkdir(self.log_path_dir)
 
         serial_settings = {}
         if platform.system() == "Windows":
@@ -313,7 +322,13 @@ class Monitor(object):
                 self.save_log(msg)
 
     def run(self):
+        cnt = 0
         while True:
+            if cnt % 2 == 0:
+                GPIO.output(7, GPIO.HIGH)
+            else:
+                GPIO.output(7, GPIO.LOW)
+            cnt += 1
             time.sleep(1)
             # 主机接收
             self.recv_open_alert()
@@ -326,17 +341,25 @@ class Monitor(object):
 
 if __name__ == "__main__":
     if "Linux" in platform.system():
-        import RPi.GPIO as GPIO
-
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(12, GPIO.OUT)
+        GPIO.setup(36, GPIO.OUT)
+        GPIO.setup(38, GPIO.OUT)
+        GPIO.setup(7, GPIO.OUT)
+
+        GPIO.output(38, GPIO.HIGH)
+        GPIO.output(36, GPIO.LOW)
+        time.sleep(2)
         for i in range(3):
             GPIO.output(12, GPIO.HIGH)
             time.sleep(0.1)
             GPIO.output(12, GPIO.LOW)
             time.sleep(0.1)
-
-    with open("./configure/config.conf", "r") as f:
+    if "Linux" in platform.system():
+        config_path = "/home/pi/manhole/configure/config.conf"
+    else:
+        config_path = "./configure/config.conf"
+    with open(config_path, "r") as f:
         conf = json.loads(f.readline())
     relay_id = conf["relay_id"]
     monitor = Monitor(relay_id)
