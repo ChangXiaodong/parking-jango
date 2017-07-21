@@ -7,6 +7,8 @@ import urllib2
 import json
 import time
 from manhole_database.models import Key
+import linecache
+import os
 
 
 def index(req):
@@ -16,8 +18,13 @@ def index(req):
     item = Key.objects.get(src="aliyun")
     times = item.query_times + 1
     Key.objects.filter(src="aliyun").update(query_times=times,time=timezone.now())
-    print("here")
-
+    log_path = "log/page_access_log.log"
+    with open("log/page_access_log.log", "a+") as f:
+        f.write("{}:REMOTE_IP->{}  USER_AGENT->{}\n".format(
+            time.strftime('%Y-%m-%d  %H:%M:%S', time.localtime(time.time())),
+            req.META["REMOTE_ADDR"],
+            req.META["HTTP_USER_AGENT"],
+        ))
     return render_to_response('info/homepage/manhole.html')
 
     # if req.method == 'POST':
