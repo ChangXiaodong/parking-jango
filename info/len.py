@@ -10,4 +10,4 @@ Content-Length:28\
 Pragma: no-cache\
 Cache-Control: no-cache\
 data=1256&node_id=0001"
-print len(string)
+print(len(string))

@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^parking/', parkingviews.index),
     url(r'^manhole/', manholeviews.index),
     url(r'^ajax_parking/$', ajax.getParking, name='ajax-parking'),
-    url(r'^ajax_manhole/$', ajax.getManhole, name='ajax-manhole'),
+    url(r'^ajax_manhole/$', ajax.getManhole_new, name='ajax-manhole'),
     url(r'^ajax_manholeitem/$', ajax.getManholeItem, name='ajax-manholeitem'),
     url(r'^ajax_parkingitem/$', ajax.getParkingItem, name='ajax-parkingitem'),
     url(r'^manhole-post/', views.postmanhole, name='postmanhole'),

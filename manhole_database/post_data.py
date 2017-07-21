@@ -6,6 +6,8 @@ from manhole_database.models import Configure
 from manhole_database.models import PreConfigure
 from manhole_database.models import IPTables
 from manhole_database.models import RelayConfig
+from manhole_database.models import Key
+from manhole_database.models import AutoSSH
 import json
 from django.utils import timezone
 import datetime
@@ -128,7 +130,8 @@ def params_set(req):
                 "acc_dlpf": 14,
                 "gyo_scale": 15,
                 "gyo_fchoice": 16,
-                "gyo_dlpf": 17
+                "gyo_dlpf": 17,
+                "angle_wake": 18
             }
             sensor_id_set = [q.sensorid for q in PreConfigure.objects.filter(relayid=req.POST["relayid"])]
             pre_params = {}
@@ -170,6 +173,8 @@ def params_set(req):
                     buf[params_index["open_angle_threshold"]] = pre_sensor.open_angle_threshold
                 if pre_sensor.open_angle_cnt != cur_sensor.open_angle_cnt:
                     buf[params_index["open_angle_cnt"]] = pre_sensor.open_angle_cnt
+                if pre_sensor.angle_wake != cur_sensor.angle_wake:
+                    buf[params_index["angle_wake"]] = pre_sensor.angle_wake
                 if buf:
                     pre_params[id] = buf
 
@@ -214,6 +219,8 @@ def params_set(req):
                 obj.update(gyo_fchoice=value)
             elif index == 17:
                 obj.update(gyo_dlpf=value)
+            elif index == 18:
+                obj.update(angle_wake=value)
 
             return HttpResponse(json.dumps("ok"), content_type="application/json")
 
@@ -231,8 +238,7 @@ def open_status(req):
 def heart_beat(req):
     if req.method == 'POST':
         sensor_id = req.POST.get("sensor_id")
-        battery = float(req.POST.get("battery"))
-        battery = "{:.2f}%".format((1550.0 - battery) / 2)
+        battery = str(req.POST.get("battery"))
         Sensor.objects.filter(sensorid=sensor_id).update(
             battery=battery,
             update_time=timezone.now()
@@ -250,9 +256,114 @@ def relay_start(req):
         local_port = ""
         remote_port = ""
         for q in relay_data_object:
-
             local_port = q.local_port
             remote_port = q.remote_port
         data = {"local_port": local_port, "remote_port": remote_port}
 
         return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+def query(req):
+    def convert_status(status):
+        if status == "low":
+            level = "正常"
+        elif status == "middle":
+            level = "中等"
+        elif status == "high":
+            level = "严重"
+        else:
+            level = "未知"
+        return level
+
+    def convert_battery(battery):
+        return "{}%".format(int((float((1500 - float(battery)) / 120)) * 100))
+
+    if req.method == 'GET':
+        sensor_id = req.GET.get("sensor_id")
+        query_type = req.GET.get("query_type")
+        key = req.GET.get("key")
+        res = {}
+        query_object = Key.objects.filter(key=key)
+        if not query_object:
+            res["error_code"] = 1
+            res["reason"] = "Authorization code error"
+            res["data"] = []
+            return HttpResponse(json.dumps(res), content_type="application/json")
+        query_times = Key.objects.get(key=key).query_times
+        access_list = Key.objects.get(key=key).access_list.split(";")
+        if sensor_id not in access_list:
+            res["error_code"] = 2
+            res["reason"] = "Authorization sensor"
+            res["data"] = []
+            return HttpResponse(json.dumps(res), content_type="application/json")
+        query_object = Key.objects.filter(key=key)
+        query_object.update(
+            query_times=query_times + 1,
+            time=timezone.now()
+        )
+
+        sensor_obj = Sensor.objects.filter(sensorid=sensor_id)
+        if not sensor_obj:
+            res["error_code"] = 2
+            res["reason"] = "Invalid sensor_id"
+            res["data"] = []
+            return HttpResponse(json.dumps(res), content_type="application/json")
+
+        sensor_obj = Sensor.objects.get(sensorid=sensor_id)
+        data = {}
+        if query_type == "all":
+            data["level"] = convert_status(sensor_obj.identified_status)
+            data["battery"] = convert_battery(sensor_obj.battery)
+            data["open_status"] = sensor_obj.open_status
+            data["loss_status"] = sensor_obj.loss_status
+        elif query_type == "level":
+            data["level"] = convert_status(sensor_obj.identified_status)
+        elif query_type == "battery":
+            data["battery"] = convert_battery(sensor_obj.battery)
+        elif query_type == "open_status":
+            data["open_status"] = sensor_obj.open_status
+        elif query_type == "loss_status":
+            data["loss_status"] = sensor_obj.loss_status
+        data["update_time"] = sensor_obj.update_time.strftime("%Y-%m-%d %H:%M:%S")
+
+        res["error_code"] = 0
+        res["reason"] = "Success"
+        res["data"] = data
+
+        return HttpResponse(json.dumps(res), content_type="application/json")
+
+
+def auto_ssh(req):
+    name = req.GET.get("name")
+    stat = req.GET.get("stat")
+    ssh_obj = AutoSSH.objects.filter(name=name)
+    reconnect_flag = "0"
+    if stat == "query":
+        if ssh_obj:
+            for res in ssh_obj:
+                reconnect_flag = res.reconnect_flag
+        return HttpResponse(json.dumps({"reconnect": reconnect_flag}), content_type="application/json")
+    elif stat == "ssh success":
+        ssh_obj.update(
+            reconnect_flag="0"
+        )
+        return HttpResponse(json.dumps({"stat": "ok"}), content_type="application/json")
+
+def post_level(req):
+    if req.method == 'GET':
+        sensor_id = req.GET.get("sensor_id")
+        level_percent = req.GET.get("level")
+
+        level_percent = float(level_percent)
+        if level_percent < 35:
+            status = "low"
+        elif level_percent < 60:
+            status = "middle"
+        else:
+            status = "high"
+        item = Sensor.objects.filter(sensorid=sensor_id)
+        item.update(
+            level_percent=level_percent,
+            identified_status=status
+        )
+        return HttpResponse(json.dumps({"stat": "ok"}), content_type="application/json")

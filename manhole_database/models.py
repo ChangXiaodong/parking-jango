@@ -8,7 +8,6 @@ class Sensor(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')  # 中继id
     sensorid = models.CharField(max_length=30, default='0')  # 传感器id
     update_time = models.DateTimeField(default='2016-04-07 10:58:41')
-    new = models.BooleanField()  # 是否是新节点
     # 启动控制
     open_time = models.DateTimeField(default='2016-04-07 10:58:41')  # 传感器开启时间
     close_time = models.DateTimeField(default='2016-04-07 10:58:41')  # 传感器关闭时间
@@ -33,7 +32,8 @@ class Sensor(models.Model):
     estimate_status = models.CharField(max_length=10, default='low')  # 井盖损坏程度预估，low，middle，high
 
     # 识别参数
-    identified_status = models.FloatField(null=True, default=0.0)  # 测量出的损坏程度，百分比
+    identified_status = models.CharField(null=True, max_length=10, default='0')  # 测量出的损坏程度，分类结果
+    level_percent = models.FloatField(null=True, default=0)  # 测量出的损坏程度，百分比
     heavy_vehicle_cnt = models.BigIntegerField(null=True, default=0)  # 重型车辆通过数量
     middle_vehicle_cnt = models.BigIntegerField(null=True, default=0)  # 中型车辆通过数量
     light_vehicle_cnt = models.BigIntegerField(null=True, default=0)  # 小型车辆通过数量
@@ -47,6 +47,7 @@ class Sensor(models.Model):
     # 其他参数
     remarks = models.TextField(null=True, default='')
     error = models.TextField(null=True, default='')
+    ssh_reconnect = models.CharField(max_length=1, default='0')
 
 
 class Data(models.Model):
@@ -69,6 +70,7 @@ class Configure(models.Model):
     sensorid = models.CharField(max_length=10, default="0")  # 传感器id
     update_time = models.DateTimeField(default=timezone.now)  # 数据更新时间
 
+    angle_wake = models.IntegerField(default=0)
     # 传感器参数配置
     acc_scale = models.IntegerField(default=0)
     acc_fchoice = models.IntegerField(default=0)
@@ -96,6 +98,7 @@ class PreConfigure(models.Model):
     sensorid = models.CharField(max_length=10, default="0")  # 传感器id
     update_time = models.DateTimeField(default=timezone.now)  # 数据更新时间
 
+    angle_wake = models.IntegerField(default=0)
     # 传感器参数配置
     acc_scale = models.IntegerField(default=0)
     acc_fchoice = models.IntegerField(default=0)
@@ -124,8 +127,22 @@ class IPTables(models.Model):
     net_address = models.CharField(max_length=6, null=True, default='0')
     channel = models.CharField(max_length=3, null=True, default='40')
 
+
 class RelayConfig(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')
     start_time = models.DateTimeField(default='2016-04-07 10:58:41')
     local_port = models.CharField(max_length=10, default="0")
     remote_port = models.CharField(max_length=10, default="0")
+
+
+class Key(models.Model):
+    src = models.CharField(max_length=30, default="0")
+    key = models.CharField(max_length=40, default="0")
+    query_times = models.IntegerField(default=0)
+    access_list = models.CharField(max_length=50, default="")
+    time = models.DateTimeField(default='2016-04-07 10:58:41')
+
+
+class AutoSSH(models.Model):
+    reconnect_flag = models.CharField(max_length=1, default="0")
+    name = models.CharField(max_length=20, default="xiaoxiami")

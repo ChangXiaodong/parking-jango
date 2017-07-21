@@ -12,4 +12,7 @@ urlpatterns = [
     url(r'^open_status/', post_data.open_status, name='open_status'),
     url(r'^heart_beat/', post_data.heart_beat, name='heart_beat'),
     url(r'^relay_start/', post_data.relay_start, name='relay_start'),
+    url(r'^query/', post_data.query, name='query'),
+    url(r'^ssh/', post_data.auto_ssh, name='ssh'),
+    url(r'^post_level/', post_data.post_level, name='level'),
 ]

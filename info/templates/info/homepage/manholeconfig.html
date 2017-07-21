@@ -70,7 +70,7 @@
         <li><a href="/info/parking"><span class="icon color5"><i class="fa fa-automobile"></i></span>停车管理<span
                 class="label label-default">27</span></a></li>
         <li><a href="/info/manhole"><span class="icon color6"><i class="fa fa-dot-circle-o"></i></span>井盖管理<span
-                class="label label-default">10</span></a></li>
+                class="label label-default">20</span></a></li>
     </ul>
 
 </div>
@@ -95,9 +95,10 @@
             <div class="panel panel-default">
                 <div class="panel-title">当前状态</div>
                 <div class="panel-body">
-                    <h1 class="status" id="status">正常</h1>
-                    <h1 class="statuscode" id="value">传感器值:</h1>
-                    <h1 class="statuscode" id="threshold">阈值:</h1>
+                    <h1 class="status" id="level">沉降等级:</h1>
+                    <h1 class="statuscode" id="open_status">开启状态:</h1>
+                    <h1 class="statuscode" id="loss_status">丢失状态:</h1>
+                    <h1 class="statuscode" id="battery">电池电量:</h1>
                     <h1 class="statuscode" id="updatetime">更新时间:</h1>
                 </div>
             </div>
@@ -158,8 +159,8 @@
                             <div class="panel panel-default">
                                 <div class="panel-body easypiechart-panel">
                                     <h4>报警次数</h4>
-                                    <div class="easypiechart" id="leasypiechart-teal" data-percent="5"><span
-                                            class="percent">5次</span>
+                                    <div class="easypiechart" id="leasypiechart-teal" data-percent="0"><span
+                                            class="percent">0次</span>
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +170,7 @@
                                 <div class="panel-body easypiechart-panel">
                                     <h4>危险程度</h4>
                                     <div class="easypiechart" id="leasypiechart-red" data-percent="46"><span
-                                            class="percent">46%</span>
+                                            class="percent" id="leasypiechart-red_span">46%</span>
                                     </div>
                                 </div>
                             </div>
@@ -181,7 +182,7 @@
                                 <div class="panel-body easypiechart-panel">
                                     <h4>节点电量</h4>
                                     <div class="easypiechart" id="easypiechart-blue" data-percent="98"><span
-                                            class="percent">98%</span>
+                                            class="percent" id="easypiechart-blue_span">98%</span>
                                     </div>
                                 </div>
                             </div>
@@ -197,8 +198,8 @@
                             <div class="panel panel-default">
                                 <div class="panel-body easypiechart-panel">
                                     <h4>报警次数</h4>
-                                    <div class="easypiechart" id="easypiechart-teal" data-percent="5"><span
-                                            class="percent">5次</span>
+                                    <div class="easypiechart" id="easypiechart-teal" data-percent="0"><span
+                                            class="percent">0次</span>
                                     </div>
                                 </div>
                             </div>

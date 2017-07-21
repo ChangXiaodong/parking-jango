@@ -2287,6 +2287,35 @@ fieldset[disabled] .btn {
   background-color: #fff;
 }
 
+/* Button Unknow */
+.btn-unknow {
+  font-size: 25px;
+  padding: 20px 60px;
+  background-color: #666;
+  color: #fff;
+  font-family: 黑体
+}
+.btn-unknow:hover,
+.btn-unknow:focus,
+.btn-unknow.focus,
+.btn-unknow:active,
+.btn-unknow.active,
+.open > .dropdown-toggle.btn-unknow {
+  background-color: #777;
+  color: #fff;
+}
+.btn-unknow:active,
+.btn-unknow.active,
+.open > .dropdown-toggle.btn-unknow {
+  background: #555;
+  box-shadow: none;
+  color: #fff;
+}
+.btn-unknow .badge {
+  color: #666;
+  background-color: #fff;
+}
+
 /* Button distance-1 */
 .btn-dis-0 {
   font-size: 25px;
@@ -2514,6 +2543,60 @@ fieldset[disabled] .btn {
 }
 .btn-alert .badge {
   color: #ef4836;
+  background-color: #fff;
+}
+.btn .fa {
+  font-size: 15px;
+  margin-right: 5px;
+}
+.btn-icon {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.btn-icon .fa {
+  margin: 0;
+  font-size: normal;
+}
+.btn-rounded {
+  border-radius: 999px;
+}
+.btn-square {
+  border-radius: 0;
+}
+.btndiv .btn {
+  margin-bottom: 10px;
+}
+
+
+
+
+
+/* Button Dangerous */
+.btn-dangerous {
+  font-size: 25px;
+  padding: 20px 60px;
+  background-color: #399bff;
+  color: #fff;
+  font-family: 黑体
+}
+.btn-dangerous:hover,
+.btn-dangerous:focus,
+.btn-dangerous.focus,
+.btn-dangerous:active,
+.btn-dangerous.active,
+.open > .dropdown-toggle.btn-dangerous {
+  background-color: #4da5ff;
+  color: #fff;
+}
+.btn-dangerous:active,
+.btn-dangerous.active,
+.open > .dropdown-toggle.btn-dangerous {
+  background: #4da5ff;
+  box-shadow: none;
+  color: #fff;
+}
+.btn-dangerous .badge {
+  color: #4da5ff;
   background-color: #fff;
 }
 .btn .fa {

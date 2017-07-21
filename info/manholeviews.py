@@ -6,13 +6,19 @@ import urllib
 import urllib2
 import json
 import time
+from manhole_database.models import Key
+
 
 def index(req):
     # for i in range(1,51):
     #     ParkData.objects .create(time=timezone.now(),relayid="0086-110108-00022105-01", data="0", parkid="22105", nodeid="0086-110108-00022105-" + str(i).zfill(4))
     # return HttpResponse("Init Database")
-	
-	return render_to_response('info/homepage/manhole.html') 
+    item = Key.objects.get(src="aliyun")
+    times = item.query_times + 1
+    Key.objects.filter(src="aliyun").update(query_times=times,time=timezone.now())
+    print("here")
+
+    return render_to_response('info/homepage/manhole.html')
 
     # if req.method == 'POST':
     #     print 'views'
@@ -67,4 +73,3 @@ def index(req):
     #                 command=cmd
     #         )
     #     return HttpResponseRedirect('/info/cmd/')
-
