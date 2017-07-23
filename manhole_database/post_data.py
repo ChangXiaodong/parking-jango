@@ -353,6 +353,10 @@ def post_level(req):
     if req.method == 'GET':
         sensor_id = req.GET.get("sensor_id")
         level_percent = req.GET.get("level")
+        light_vehicle_cnt = req.GET.get("light_vehicle_cnt")
+        middle_vehicle_cnt = req.GET.get("middle_vehicle_cnt")
+        heavy_vehicle_cnt = req.GET.get("heavy_vehicle_cnt")
+        total_vehicle_cnt = req.GET.get("total_vehicle_cnt")
 
         level_percent = float(level_percent)
         if level_percent < 35:
@@ -364,6 +368,10 @@ def post_level(req):
         item = Sensor.objects.filter(sensorid=sensor_id)
         item.update(
             level_percent=level_percent,
-            identified_status=status
+            identified_status=status,
+            light_vehicle_cnt=light_vehicle_cnt,
+            middle_vehicle_cnt=middle_vehicle_cnt,
+            heavy_vehicle_cnt=heavy_vehicle_cnt,
+            total_vehicle_cnt=total_vehicle_cnt
         )
         return HttpResponse(json.dumps({"stat": "ok"}), content_type="application/json")
