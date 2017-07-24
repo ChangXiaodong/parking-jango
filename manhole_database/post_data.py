@@ -276,7 +276,10 @@ def query(req):
         return level
 
     def convert_battery(battery):
-        return "{}%".format(int((float((1500 - float(battery)) / 120)) * 100))
+        percent = int((float((1500 - float(battery)) / 120)) * 100)
+        percent = min(100, percent)
+        return "{}%".format(percent)
+
 
     if req.method == 'GET':
         sensor_id = req.GET.get("sensor_id")

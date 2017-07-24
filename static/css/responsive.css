@@ -81,28 +81,49 @@ smaller than 428
 	}
 	.topstats li{width: 100%;}
 	.btn-normal{
-		  font-size: 15px;
-		  padding: 14px 25px;
+		  font-size: 20px;
+		  padding: 25px 50px;
 		  background-color: #26a65b;
 		  color: #fff;
 		  font-family: 黑体
 	}
 	.btn-alert {
-		  font-size: 15px;
-		  padding: 14px 25px;
+		  font-size: 20px;
+		  padding: 25px 50px;
 		  background-color: #ef4836;
 		  color: #fff;
 		  font-family: 黑体
 	}
+	.btn-dis-3 {
+		  font-size: 20px;
+		  padding: 25px 50px;
+		  background-color: #FFDA44;
+		  color: #fff;
+		  font-family: 黑体
+	}
+	.btn-unknow {
+		  font-size: 20px;
+		  padding: 25px 50px;
+		  background-color: #666;
+		  color: #fff;
+		  font-family: 黑体
+	}
+	.btn-dangerous {
+		  font-size: 20px;
+		  padding: 25px 50px;
+		  background-color: #399bff;
+		  color: #fff;
+		  font-family: 黑体
+	}
 	.btn-uncalibrate {
-		font-size: 15px;
-		padding: 14px 25px;
+		font-size: 20px;
+		padding: 25px 50px;
 		background-color: #33577b;
 		color: #fff;
 		font-family: 黑体
 	}
 	.btn-group {
-		  padding: 14px 25px;
+		  padding: 25px 50px;
 		}
 	.circle-small{display:block;}
 	.circle-big{display:none;}

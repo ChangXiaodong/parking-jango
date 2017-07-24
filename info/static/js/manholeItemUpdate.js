@@ -18,7 +18,19 @@ function time() {
             }
             document.getElementById("open_status").innerHTML = "开启状态:" + open_status;
             document.getElementById("loss_status").innerHTML = "丢失状态:" + loss_status;
-            document.getElementById("battery").innerHTML = "电池电量:" + item.battery;
+            document.getElementById("battery").innerHTML = "电池电量:" + item.battery + "%";
+            document.getElementById("easypiechart-blue_span").innerHTML = item.battery + "%";
+            document.getElementById("easypiechart-blue").setAttribute("data-percent", item.battery);
+            battery_easychart = window.chart = $('#easypiechart-blue').data('easyPieChart');
+            battery_easychart.update(item.battery);
+            document.getElementById("leasypiechart-blue_span").innerHTML = item.battery + "%";
+            document.getElementById("leasypiechart-blue").setAttribute("data-percent", item.battery);
+            battery_chart = window.chart = $('#leasypiechart-blue').data('easyPieChart');
+            battery_chart.update(item.battery);
+
+
+
+
             document.getElementById("updatetime").innerHTML = "更新时间:" + item.time;
             document.getElementById("leasypiechart-red_span").innerHTML = item.level_num + "%";
             document.getElementById("leasypiechart-red").setAttribute("data-percent", item.level_num);
@@ -26,38 +38,7 @@ function time() {
             danger_chart.update(item.level_num);
 
 
-            // if (item.cmd == 1) {
-            //     document.getElementById("cali_icon").innerHTML = '  <i class="fa fa-refresh">'
-            //     document.getElementById("s_cali_icon").innerHTML = '  <i class="fa fa-refresh">'
-            // }
-            // else {
-            //     document.getElementById("cali_icon").innerHTML = ''
-            //     document.getElementById("s_cali_icon").innerHTML = ''
-            // }
-            // if (item.cmd == 2) {
-            //     document.getElementById("reboot_icon").innerHTML = '  <i class="fa fa-refresh">'
-            //     document.getElementById("s_reboot_icon").innerHTML = '  <i class="fa fa-refresh">'
-            // }
-            // else {
-            //     document.getElementById("reboot_icon").innerHTML = ''
-            //     document.getElementById("s_reboot_icon").innerHTML = ''
-            // }
-            // if (item.cmd == 3) {
-            //     document.getElementById("stop_icon").innerHTML = '  <i class="fa fa-refresh">'
-            //     document.getElementById("s_stop_icon").innerHTML = '  <i class="fa fa-refresh">'
-            // }
-            // else {
-            //     document.getElementById("stop_icon").innerHTML = ''
-            //     document.getElementById("s_stop_icon").innerHTML = ''
-            // }
-            // if (item.cmd == 4) {
-            //     document.getElementById("start_icon").innerHTML = '  <i class="fa fa-refresh">'
-            //     document.getElementById("s_start_icon").innerHTML = '  <i class="fa fa-refresh">'
-            // }
-            // else {
-            //     document.getElementById("start_icon").innerHTML = ''
-            //     document.getElementById("s_start_icon").innerHTML = ''
-            // }
+
         });
     })
 }

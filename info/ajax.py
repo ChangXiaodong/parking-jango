@@ -99,7 +99,9 @@ def getManholeItem(req):
     dict['level_num'] = item.level_percent
     dict["open_status"] = item.open_status
     dict["loss_status"] = item.loss_status
-    dict["battery"] = item.battery
+    percent = int((float((1500 - float(item.battery)) / 120)) * 100)
+    percent = min(100, percent)
+    dict["battery"] = "{}".format(percent)
     dict['time'] = (str(item.update_time.strftime('%Y-%m-%d %H:%M:%S')))
     data.append(dict)
     return JsonResponse(data, safe=False)
