@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('manhole_database', '0015_auto_20170718_2123'),
+        ('manhole_database', '0014_key_time'),
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.AlterField(
             model_name='sensor',
-            name='level_percent',
-            field=models.FloatField(default=0, null=True),
+            name='identified_status',
+            field=models.CharField(default=b'0', max_length=10, null=True),
         ),
     ]
