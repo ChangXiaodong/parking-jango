@@ -131,6 +131,7 @@ class IPTables(models.Model):
 class RelayConfig(models.Model):
     relayid = models.CharField(max_length=30, null=True, default='0')
     start_time = models.DateTimeField(default='2016-04-07 10:58:41')
+    update_time = models.DateTimeField(default='2016-04-07 10:58:41')
     local_port = models.CharField(max_length=10, default="0")
     remote_port = models.CharField(max_length=10, default="0")
 

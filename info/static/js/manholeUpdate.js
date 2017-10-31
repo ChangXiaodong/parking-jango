@@ -14,12 +14,14 @@ function time() {
             }
             else if (item.level=="未知") {
                 document.getElementById(element_id).className = "btn btn-unknow";
+                item.level = "低"
             }
             open_status = "未开启";
             if (item.open_status == "open_true"){
                 document.getElementById(element_id).className = "btn btn-alert";
                 open_status = "已开启";
             }
+
             document.getElementById(element_id).innerHTML = "井盖编号:" + item.id + "<br>"
                 +"沉降程度:" + item.level + "<br>"
             + "开启状态:"+open_status;

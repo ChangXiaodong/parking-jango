@@ -67,6 +67,10 @@ def active_node(req):
                     node["close"].append(q.sensorid)
         except:
             pass
+        relay_data_object = RelayConfig.objects.filter(relayid=relayid)
+        relay_data_object.update(
+            update_time=time_now
+        )
         return HttpResponse(json.dumps(node), content_type="application/json")
 
 
@@ -239,6 +243,11 @@ def heart_beat(req):
     if req.method == 'POST':
         sensor_id = req.POST.get("sensor_id")
         battery = str(req.POST.get("battery"))
+        # with open("log/heatr_beat.txt", "a+") as f:
+        #     f.write("sensor id:{} battery{}: updatetime:{}\n".format(
+        #         sensor_id,
+        #         battery,
+        #         datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         Sensor.objects.filter(sensorid=sensor_id).update(
             battery=battery,
             update_time=timezone.now()
@@ -276,10 +285,9 @@ def query(req):
         return level
 
     def convert_battery(battery):
-        percent = int((float((1500 - float(battery)) / 120)) * 100)
+        percent = int((float((1500 - float(battery)) / 125)) * 100)
         percent = min(100, percent)
         return "{}%".format(percent)
-
 
     if req.method == 'GET':
         sensor_id = req.GET.get("sensor_id")
@@ -351,6 +359,7 @@ def auto_ssh(req):
             reconnect_flag="0"
         )
         return HttpResponse(json.dumps({"stat": "ok"}), content_type="application/json")
+
 
 def post_level(req):
     if req.method == 'GET':

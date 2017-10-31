@@ -19,14 +19,15 @@ function time() {
             document.getElementById("open_status").innerHTML = "开启状态:" + open_status;
             document.getElementById("loss_status").innerHTML = "丢失状态:" + loss_status;
             document.getElementById("battery").innerHTML = "电池电量:" + item.battery + "%";
-            document.getElementById("asypiechart-blue_span").innerHTML = item.battery + "%";
+            document.getElementById("easypiechart-blue_span").innerHTML = item.battery + "%";
             document.getElementById("easypiechart-blue").setAttribute("data-percent", item.battery);
+            battery_easychart = window.chart = $('#easypiechart-blue').data('easyPieChart');
+            battery_easychart.update(item.battery);
             document.getElementById("leasypiechart-blue_span").innerHTML = item.battery + "%";
             document.getElementById("leasypiechart-blue").setAttribute("data-percent", item.battery);
             battery_chart = window.chart = $('#leasypiechart-blue').data('easyPieChart');
             battery_chart.update(item.battery);
-            battery_easychart = window.chart = $('#easypiechart-blue').data('easyPieChart');
-            battery_easychart.update(item.battery);
+
 
 
 
